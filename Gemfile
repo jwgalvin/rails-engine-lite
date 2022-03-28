@@ -7,15 +7,17 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'faraday'
-gem 'bcrypt', '~> 3.1.7'
+
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
+  gem 'jsonapi-serializer'
   gem 'figaro'
   gem 'pry'
   gem 'faker'
   gem 'simplecov'
+  gem 'shoulda-matchers'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 

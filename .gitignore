@@ -12,7 +12,8 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-
+/coverage/*
+/coverage/index.html
 # Ignore uploaded files in development
 /storage/*
 !/storage/.keep
@@ -21,3 +22,4 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+echo coverage >> .gitignore

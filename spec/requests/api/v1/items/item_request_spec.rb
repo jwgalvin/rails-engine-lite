@@ -77,21 +77,23 @@ describe "Items API" do
   end
 
 
-  # it "only get 1 item" do
-  #   merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
-  #   item1 = merchant1.items.create!(description: "sumtin", name: "a ting", unit_price: 4000)
-  #   get "/api/v1/merchants/#{merchant1.id}/items/#{item1.id}"
-  # 
-  #   expect(response).to be_successful
-  #   item_parsed = JSON.parse(response.body, symbolize_names: true)
-  #   #binding.pry
-  #   expect(item_parsed[:data][:id]).to be_a(String)
-  #   expect(item_parsed[:data][:attributes][:merchant_id]).to eq(merchant1.id)
-  #   expect(item_parsed[:data][:attributes][:name]).to be_a(String)
-  #   expect(item_parsed[:data][:attributes][:name]).to eq(item1.name)
-  #   expect(item_parsed[:data][:attributes][:description]).to eq(item1.description)
-  #   expect(item_parsed[:data][:attributes][:unit_price]).to eq(item1.unit_price)
-  #
-  # end
+  it "creates a new item" do
+    merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
+    item_params = ({"name": "Rib stretcher Plus!", "description": "stretch their ribs without breaking!", "unit_price": 126.42, "merchant_id": merchant1.id
+      })
+
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    post "/api/v1/items",headers: headers, params: JSON.generate(item: item_params)
+    item_created = Item.last
+
+    expect(response).to be_successful
+    expect(item_created.name).to eq(item_params[:name])
+    expect(item_created.description).to eq(item_params[:description])
+    expect(item_created.unit_price).to eq(item_params[:unit_price])
+    expect(item_created.merchant_id).to eq(item_params[:merchant_id])
+  end
+
+  def
 
 end

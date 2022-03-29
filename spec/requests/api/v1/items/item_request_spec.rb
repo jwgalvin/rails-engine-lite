@@ -83,9 +83,18 @@ describe "Items API" do
 
     expect(response).to be_successful
     expect(item_updated.name).to eq("inigo's neck stretcher")
-
   end
 
+  it "will delete/destroy and item" do
+
+    item =  create(:item)
+    #binding.pry
+    expect(Item.last).to eq(item)
+    delete "/api/v1/items/#{item.id}"
+    expect(Item.count).to eq(0)
+    expect(response).to be_successful
+    expect{Item.find(item.id).to raise_error(ActiveRecord::RecordNotFound)}
+  end
 
 
 end

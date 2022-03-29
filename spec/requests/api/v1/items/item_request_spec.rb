@@ -36,7 +36,28 @@ describe "Items API" do
       expect(item[:attributes][:merchant_id]).to be_a(Integer)
     end
   end
-  it "only get 1 merchant" do
+
+  it "only get 1 merchants items" do
+    merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
+    merchant2 = Merchant.create!(name: "MarksEmporium")
+    item1 = merchant1.items.create!(description: "sumtin", name: "a ting", unit_price: 230)
+    item2 = merchant1.items.create!(description: "atin", name: "ang", unit_price: 41)
+    item3 = merchant2.items.create!(description: "mortin", name: "a ti", unit_price: 420)
+    item4 = merchant2.items.create!(description: "stin", name: "ing", unit_price: 40)
+    get "/api/v1/merchants/#{merchant1.id}/items"
+
+    expect(response).to be_successful
+    item_parsed = JSON.parse(response.body, symbolize_names: true)
+    item_parsed[:data].each do |item|
+      expect(item[:id]).to be_a(String)
+      #binding.pry
+      expect(item[:attributes][:name]).to be_a(String)
+      expect(item[:attributes][:description]).to be_a(String)
+      expect(item[:attributes][:unit_price]).to be_a(Float)
+    end
+  end
+
+  it "only get 1 item" do
     merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
     item1 = merchant1.items.create!(description: "sumtin", name: "a ting", unit_price: 4000)
     get "/api/v1/merchants/#{merchant1.id}/items/#{item1.id}"

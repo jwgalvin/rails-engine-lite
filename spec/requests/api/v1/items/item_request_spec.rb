@@ -65,6 +65,8 @@ describe "Items API" do
 
     expect(response).to be_successful
     item_parsed = JSON.parse(response.body, symbolize_names: true)
+    #binding.pry
+    expect(item_parsed[:data].count).to eq(2)
     item_parsed[:data].each do |item|
       expect(item[:id]).to be_a(String)
       #binding.pry
@@ -75,21 +77,21 @@ describe "Items API" do
   end
 
 
-  it "only get 1 item" do
-    merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
-    item1 = merchant1.items.create!(description: "sumtin", name: "a ting", unit_price: 4000)
-    get "/api/v1/merchants/#{merchant1.id}/items/#{item1.id}"
-
-    expect(response).to be_successful
-    item_parsed = JSON.parse(response.body, symbolize_names: true)
-    #binding.pry
-    expect(item_parsed[:data][:id]).to be_a(String)
-    expect(item_parsed[:data][:attributes][:merchant_id]).to eq(merchant1.id)
-    expect(item_parsed[:data][:attributes][:name]).to be_a(String)
-    expect(item_parsed[:data][:attributes][:name]).to eq(item1.name)
-    expect(item_parsed[:data][:attributes][:description]).to eq(item1.description)
-    expect(item_parsed[:data][:attributes][:unit_price]).to eq(item1.unit_price)
-
-  end
+  # it "only get 1 item" do
+  #   merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
+  #   item1 = merchant1.items.create!(description: "sumtin", name: "a ting", unit_price: 4000)
+  #   get "/api/v1/merchants/#{merchant1.id}/items/#{item1.id}"
+  # 
+  #   expect(response).to be_successful
+  #   item_parsed = JSON.parse(response.body, symbolize_names: true)
+  #   #binding.pry
+  #   expect(item_parsed[:data][:id]).to be_a(String)
+  #   expect(item_parsed[:data][:attributes][:merchant_id]).to eq(merchant1.id)
+  #   expect(item_parsed[:data][:attributes][:name]).to be_a(String)
+  #   expect(item_parsed[:data][:attributes][:name]).to eq(item1.name)
+  #   expect(item_parsed[:data][:attributes][:description]).to eq(item1.description)
+  #   expect(item_parsed[:data][:attributes][:unit_price]).to eq(item1.unit_price)
+  #
+  # end
 
 end

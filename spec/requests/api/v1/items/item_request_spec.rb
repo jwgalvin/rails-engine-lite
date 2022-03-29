@@ -20,6 +20,23 @@ describe "Items API" do
     expect(item_list[:data].count).to eq(10)
   end
 
+  it "gets 1 item" do
+    create_list(:item, 10)
+    get "/api/v1/items/#{Item.first.id}"
+    item = Item.first
+    expect(response).to be_successful
+    item_parsed = JSON.parse(response.body, symbolize_names: true)
+    #binding.pry
+
+    expect(item_parsed[:data][:id]).to eq("#{item.id}")
+    expect(item_parsed[:data][:type]).to eq("item")
+    expect(item_parsed[:data][:attributes][:name]).to eq("#{item.name}")
+    expect(item_parsed[:data][:attributes][:description]).to eq("#{item.description}")
+    expect(item_parsed[:data][:attributes][:unit_price]).to eq(item.unit_price)
+    expect(item_parsed[:data][:attributes][:merchant_id]).to eq(item.merchant_id)
+
+  end
+
   it "Verifies that all items have all the attributes" do
     create_list(:item, 10)
     get '/api/v1/items'
@@ -56,6 +73,7 @@ describe "Items API" do
       expect(item[:attributes][:unit_price]).to be_a(Float)
     end
   end
+
 
   it "only get 1 item" do
     merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")

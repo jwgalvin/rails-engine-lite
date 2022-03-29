@@ -20,31 +20,37 @@ describe "Items API" do
     expect(item_list[:data].count).to eq(10)
   end
 
-  xit "Verifies that all merchants have all the attributes" do
+  it "Verifies that all items have all the attributes" do
     create_list(:item, 10)
     get '/api/v1/items'
 
     expect(response).to be_successful
     item_list = JSON.parse(response.body, symbolize_names: true)
     item_list[:data].each do |item|
-      binding.pry
+      #binding.pry
       expect(item[:id]).to be_a(String)
       expect(item[:type]).to eq("item")
+      expect(item[:attributes][:description]).to be_a(String)
       expect(item[:attributes][:name]).to be_a(String)
-
+      expect(item[:attributes][:unit_price]).to be_a(Float)
+      expect(item[:attributes][:merchant_id]).to be_a(Integer)
     end
   end
-  xit "only get 1 merchant" do
+  it "only get 1 merchant" do
     merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
-    get "/api/v1/merchants/#{merchant1.id}"
+    item1 = merchant1.items.create!(description: "sumtin", name: "a ting", unit_price: 4000)
+    get "/api/v1/merchants/#{merchant1.id}/items/#{item1.id}"
 
     expect(response).to be_successful
-    merchant = JSON.parse(response.body, symbolize_names: true)
-    #.pry
-    expect(merchant[:data][:id]).to be_a(String)
-    expect(merchant[:data][:type]).to eq("merchant")
-    expect(merchant[:data][:attributes][:name]).to be_a(String)
-    expect(merchant[:data][:attributes][:name]).to eq(merchant1.name)
+    item_parsed = JSON.parse(response.body, symbolize_names: true)
+    #binding.pry
+    expect(item_parsed[:data][:id]).to be_a(String)
+    expect(item_parsed[:data][:attributes][:merchant_id]).to eq(merchant1.id)
+    expect(item_parsed[:data][:attributes][:name]).to be_a(String)
+    expect(item_parsed[:data][:attributes][:name]).to eq(item1.name)
+    expect(item_parsed[:data][:attributes][:description]).to eq(item1.description)
+    expect(item_parsed[:data][:attributes][:unit_price]).to eq(item1.unit_price)
+
   end
 
 end

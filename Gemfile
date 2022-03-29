@@ -7,7 +7,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'faraday'
-gem 'faker'
+
 
 group :development, :test do
   gem 'rspec-rails'

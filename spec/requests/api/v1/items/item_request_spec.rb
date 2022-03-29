@@ -94,6 +94,19 @@ describe "Items API" do
     expect(item_created.merchant_id).to eq(item_params[:merchant_id])
   end
 
-  def
+  it " can update the thing" do
+    merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
+    item = create(:item)
+    save_name = item.name
+    new_name = { name: "inigo's neck stretcher"}
+    #binding.pry
+    header = {"CONTENT_TYPE" => "application/json"}
+    patch "api/v1/items/#{item.id}", headers: header, params:JSON.generate({item: new_name})
+    item_updated = Item.find_by(id: "#{item.id}")
+
+    expect(response).to be_successful
+    expect(item_updated.name).to eq("inigo's neck stretcher")
+    
+  end
 
 end

@@ -101,12 +101,12 @@ describe "Items API" do
     new_name = { name: "inigo's neck stretcher"}
     #binding.pry
     header = {"CONTENT_TYPE" => "application/json"}
-    patch "api/v1/items/#{item.id}", headers: header, params:JSON.generate({item: new_name})
+    patch "/api/v1/items/#{item.id}", headers: header, params:JSON.generate({item: new_name})
     item_updated = Item.find_by(id: "#{item.id}")
 
     expect(response).to be_successful
     expect(item_updated.name).to eq("inigo's neck stretcher")
-    
+
   end
 
 end

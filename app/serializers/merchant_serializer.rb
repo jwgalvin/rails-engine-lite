@@ -5,5 +5,4 @@ class MerchantSerializer
   set_id :id
   attributes :name
 
-  has_many :items
 end

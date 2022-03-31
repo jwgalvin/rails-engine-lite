@@ -96,5 +96,13 @@ describe "Items API" do
     expect{Item.find(item.id).to raise_error(ActiveRecord::RecordNotFound)}
   end
 
+  it 'should return the merchant' do
+    merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
+    item = create(:item, merchant_id: merchant1.id)
+    # binding.pry
+    get "/api/v1/items/#{item.id}/merchant"
+    #binding.pry
+  end
+
 
 end

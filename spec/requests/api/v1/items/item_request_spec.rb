@@ -83,9 +83,29 @@ describe "Items API" do
 
     expect(response).to be_successful
     expect(item_updated.name).to eq("inigo's neck stretcher")
-
   end
 
+  it "will delete/destroy and item" do
 
+    item =  create(:item)
+    #binding.pry
+    expect(Item.last).to eq(item)
+    delete "/api/v1/items/#{item.id}"
+    expect(Item.count).to eq(0)
+    expect(response).to be_successful
+    expect{Item.find(item.id).to raise_error(ActiveRecord::RecordNotFound)}
+  end
+
+  it 'should return the merchant' do
+    merchant1 = Merchant.create!(name: "Inigo's Revenge Emporium")
+    item = create(:item, merchant_id: merchant1.id)
+    # binding.pry
+    get "/api/v1/items/#{item.id}/merchant"
+    merchant = JSON.parse(response.body, symbolize_names: true)
+    #binding.pry
+    expect(merchant[:data].count).to eq(3)
+    expect(merchant[:data][:id]).to eq("#{merchant1.id}")
+    expect(merchant[:data][:attributes][:name]).to eq("#{merchant1.name}")
+  end
 
 end

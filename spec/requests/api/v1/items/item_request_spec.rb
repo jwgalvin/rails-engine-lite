@@ -101,8 +101,11 @@ describe "Items API" do
     item = create(:item, merchant_id: merchant1.id)
     # binding.pry
     get "/api/v1/items/#{item.id}/merchant"
+    merchant = JSON.parse(response.body, symbolize_names: true)
     #binding.pry
+    expect(merchant[:data].count).to eq(3)
+    expect(merchant[:data][:id]).to eq("#{merchant1.id}")
+    expect(merchant[:data][:attributes][:name]).to eq("#{merchant1.name}")
   end
-
 
 end

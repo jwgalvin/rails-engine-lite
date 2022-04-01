@@ -6,10 +6,7 @@ describe 'Finds the merchants:::' do
     merchant2 = Merchant.create!(name: "MarksEmporium")
     merchant3 = Merchant.create!(name: "Perrenial distraction Emporium")
     merchant4 = Merchant.create!(name: "Marta Emporium")
-    # item1 = merchant1.items.create!(description: "sumtin", name: "a ting", unit_price: 230)
-    # item2 = merchant1.items.create!(description: "atin", name: "ang", unit_price: 41)
-    # item3 = merchant1.items.create!(description: "mortin", name: "a ti", unit_price: 420)
-    # item4 = merchant2.items.create!(description: "stin", name: "ing", unit_price: 40)
+    
 
     get '/api/v1/merchants/find_all?name=emp'
 

@@ -32,4 +32,13 @@ class Merchant <ApplicationRecord
     .group(:id)
     .sum(&:total_revenue)
   end
+
+  def self.total_revenue_between_dates(start, end)
+    start_date = start.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+    Merchant
+      .joins(invoices: {invoice_items: :transactions})
+      .where(invoices: {status: 'shipped', created_at: start_date, }
+      .sum('invoice_items.unit_price * invoice_items.quantity')
+  end
 end
